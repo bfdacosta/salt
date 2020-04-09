@@ -3,14 +3,12 @@
 Unit tests for salt.config
 """
 
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 import textwrap
 
-# Import Salt libs
 import salt.config
 import salt.minion
 import salt.syspaths
@@ -25,8 +23,6 @@ from salt.exceptions import (
 )
 from salt.ext import six
 from salt.syspaths import CONFIG_DIR
-
-# Import Salt Testing libs
 from tests.support.helpers import patched_environ, with_tempdir, with_tempfile
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.mock import MagicMock, Mock, patch
@@ -797,8 +793,15 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         if RUNTIME_VARS.PYTEST_SESSION is False:
             # Pytest assigns ports dynamically
             self.assertEqual(syndic_opts["master_port"], 54506)
-        self.assertEqual(syndic_opts["master"], "localhost")
-        self.assertEqual(syndic_opts["sock_dir"], os.path.join(root_dir, "syndic_sock"))
+            self.assertEqual(syndic_opts["master"], "localhost")
+            self.assertEqual(
+                syndic_opts["sock_dir"], os.path.join(root_dir, "syndic_sock")
+            )
+        else:
+            self.assertEqual(syndic_opts["master"], "127.0.0.1")
+            self.assertEqual(
+                syndic_opts["sock_dir"], os.path.join(root_dir, "run", "minion")
+            )
         self.assertEqual(syndic_opts["cachedir"], os.path.join(root_dir, "cache"))
         self.assertEqual(
             syndic_opts["log_file"], os.path.join(root_dir, "logs", "syndic.log")
