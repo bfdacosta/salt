@@ -10,7 +10,6 @@
     Process handling utilities
 """
 
-# Import python libs
 from __future__ import absolute_import
 
 import logging
@@ -23,15 +22,11 @@ from pytestsalt.fixtures.daemons import SaltMinion as PytestSaltMinion
 from pytestsalt.fixtures.daemons import SaltProxy as PytestSaltProxy
 from pytestsalt.fixtures.daemons import SaltRun as PytestSaltRun
 from pytestsalt.fixtures.daemons import SaltSyndic as PytestSaltSyndic
-
-# Import pytest-salt libs
-from pytestsalt.utils import (  # pylint: disable=unused-import
+from saltfactories.utils.processes.helpers import (  # pylint: disable=unused-import
     collect_child_processes,
     terminate_process,
     terminate_process_list,
 )
-
-# Import tests support libs
 from tests.support.cli_scripts import ScriptPathMixin
 
 log = logging.getLogger(__name__)
