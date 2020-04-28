@@ -3,7 +3,6 @@
     :codeauthor: Thomas Jackson <jacksontj.89@gmail.com>
 """
 
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
@@ -27,11 +26,10 @@ from salt.transport.tcp import (
     SaltMessageClientPool,
     TCPPubServerChannel,
 )
-from tests.support.helpers import flaky, get_unused_localhost_port
+from saltfactories.utils.ports import get_unused_localhost_port
+from tests.support.helpers import flaky
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.mock import MagicMock, patch
-
-# Import Salt Testing libs
 from tests.support.unit import TestCase, skipIf
 from tests.unit.transport.mixins import (
     PubChannelMixin,
