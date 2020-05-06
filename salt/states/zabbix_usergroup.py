@@ -76,17 +76,22 @@ def present(name, **kwargs):
         update_debug_mode = False
         update_gui_access = False
         update_users_status = False
+        update_full_rights = False
         update_rights = False
 
         if "debug_mode" in kwargs:
             if int(kwargs["debug_mode"]) != int(usergroup["debug_mode"]):
                 update_debug_mode = True
 
+        if "full_rights" in kwargs:
+            if int(kwargs["full_rights"]):
+                update_full_rights = True
+
         if "gui_access" in kwargs:
             if int(kwargs["gui_access"]) != int(usergroup["gui_access"]):
                 update_gui_access = True
 
-        if "rights" in kwargs:
+        if "rights" in kwargs and not "full_rights" in kwargs:
             # Older versions of Zabbix do not return the list of rights for the user group, handle this gracefully
             try:
                 if usergroup["rights"]:
@@ -114,6 +119,7 @@ def present(name, **kwargs):
                 or update_gui_access
                 or update_rights
                 or update_users_status
+                or update_full_rights
             ):
                 ret["result"] = None
                 ret["comment"] = comment_usergroup_updated
@@ -133,6 +139,7 @@ def present(name, **kwargs):
             or update_gui_access
             or update_rights
             or update_users_status
+            or update_full_rights
         ):
             ret["result"] = True
             ret["comment"] = comment_usergroup_updated
@@ -163,6 +170,15 @@ def present(name, **kwargs):
                     error.append(updated_rights["error"])
                 else:
                     ret["changes"]["rights"] = kwargs["rights"]
+
+            if update_full_rights:
+                update_full_rights = __salt__["zabbix.usergroup_update"](
+                    usrgrpid, full_rights=kwargs["full_rights"], **connection_args
+                )
+                if "error" in update_full_rights:
+                    error.append(updated_full_rights["error"])
+                else:
+                    ret["changes"]["updated_full_rights"] = kwargs["full_rights"]
 
             if update_users_status:
                 updated_status = __salt__["zabbix.usergroup_update"](

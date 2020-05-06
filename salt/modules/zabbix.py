@@ -906,6 +906,7 @@ def usergroup_create(name, **connection_args):
             method = "usergroup.create"
             params = {"name": name}
             params = _params_extend(params, **connection_args)
+            print (**connection_args)
             ret = _query(method, params, conn_args["url"], conn_args["auth"])
             return ret["result"]["usrgrpids"]
         else:
